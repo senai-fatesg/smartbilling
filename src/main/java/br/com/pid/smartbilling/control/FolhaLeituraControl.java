@@ -35,7 +35,7 @@ public class FolhaLeituraControl {
 	}
 
 	public void listar(){
-		leituras =  leituraRepository.listarTodos(new PageRequest(0, 50));
+		leituras =  leituraRepository.findAll();
 		//new PageRequest(0, 50)
 	}
 
