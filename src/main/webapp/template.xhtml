@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui">
+	<h:head>
+		<title>Smartbilling</title>
+	<link href="resources/css/bootstrap.css" rel="stylesheet" />
+	<link href="resources/css/style.css" rel="stylesheet" />
+		<!-- 
+	<link href="css/bootstrap-responsive.css" rel="stylesheet" />
+	<link href="css/styles.css" rel="stylesheet" />
+	
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/monitorar.js"></script>
+	 -->
+	
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="Cache-Control"
+		content="no-cache, no-store, must-revalidate" />
+	<meta http-equiv="Pragma" content="no-cache" />
+	<meta http-equiv="Expires" content="0" />
+	<script>
+		function focar() {
+			document.getElementById("usuario").focus();
+		}
+	</script>
+	<style>
+		.sair{
+			font-size: 20px;
+			margin-top: 10px;
+			margin-left: 80%;
+		}
+	</style>
+	</h:head>
+	<h:body>
+		<p:layout fullPage="true" onToggle="true">
+			<div class="content-fluid">
+				<p:layoutUnit position="north" size="60"  >
+					<div style="position: absolute; z-index: -1; top: 0; left: 0; width: 100%; height: 100%; background: url('#{request.contextPath}/imagens/background-pattern.png') center center; background-size: 200 200; ">
+					</div>
+					<ui:include src="/menuTopo.xhtml"></ui:include>
+				</p:layoutUnit>
+			</div>
+			<p:layoutUnit position="west" resizable="true"  closable="true" collapsible="true" size="200" style="margin-left: -10px;">
+				<h:form>
+					<div id="divlay" style="position: absolute; z-index: -1; top: 0; left: 0; width: 100%; height: 100%; background: url('#{request.contextPath}/imagens/background-pattern.png') center center; background-size: 200 200; ">
+					</div>
+					<ui:include src="/menuUsuario.xhtml" />
+				</h:form>
+			</p:layoutUnit>
+			<p:layoutUnit  position="center">
+				<h:form id="formCorpo" enctype="multipart/form-data">
+					<p:messages id="message"/>
+					<ui:insert name="corpo"/>
+				</h:form>
+			</p:layoutUnit>
+		</p:layout>
+	</h:body>
+</html>

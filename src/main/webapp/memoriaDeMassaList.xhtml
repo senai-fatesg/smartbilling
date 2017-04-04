@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ui:composition template="template.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a="http://www.ambientinformatica.com.br/jsf2" xmlns:p="http://primefaces.org/ui">
+	<ui:define name="corpo">
+	
+		<p:growl id="msgs" showDetail="true" />
+		<p:panel id="pnlMemoria" header="Memórias">
+			<br/>
+			<br/>
+			<div>
+	   			<p:fileUpload label="Selecionar arquivo" value="#{medidorControl.file}" mode="simple" skinSimple="true"/>
+	   		</div>
+	   		<br/>
+	   		<div style="margin-top: -15px">
+	   			<p:commandButton value="Carregar dados" ajax="false" actionListener="#{medidorControl.getUpload}" update=":formCorpo:tblMedidor" icon="ui-icon-disk" style="width: 180px"/>
+	   		</div>
+			<br/>
+			<p:dataTable id="tblMedidor" var="medidor" value="#{medidorControl.medidores}" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} 
+				{PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,15">
+			    <p:column headerText="Série medidor">
+			        <h:outputText value="#{medidor.numeroSerieMedidor}" />
+			    </p:column>
+			    <p:column headerText="Série leitor">
+			        <h:outputText value="#{medidor.numeroSerieLeitor}" />
+			    </p:column>
+			    <p:column headerText="Data">
+			        <h:outputText value="#{medidor.diaAtual}/#{medidor.mesAtual}/#{medidor.anoAtual}" />
+			    </p:column>
+			    <p:column headerText="Est bateria">
+			        <h:outputText value="#{medidor.estadoDaBateria}" />
+			    </p:column>
+			    <p:column headerText="Tipo medidor">
+			        <h:outputText value="#{medidor.tipoDeTarifa}" />
+			    </p:column>
+			    <p:column headerText="Versão software">
+			        <h:outputText value="#{medidor.versaoSoftwareRegistrador}" />
+			    </p:column>
+			    <p:column headerText="Inf. erro">
+			        <h:outputText value="#{medidor.ERRO_InformacaoDeErroNoMedidor}" />
+			    </p:column>
+			    <p:column style="width:32px;text-align: center">
+		            <p:commandButton oncomplete="PF('medidorDialog').show();" actionListener="#{medidorControl.mostrarLeituras(medidor)}" icon="ui-icon-search" update=":formCorpo:dlgLeituras"/>
+	        	</p:column>
+			</p:dataTable>
+		</p:panel>
+		<p:dialog header="Leituras" id="dlgLeituras" widgetVar="medidorDialog" resizable="false" width="90%" height="500px">
+	        <p:dataTable var="leitura" value="#{medidorControl.leituras}" rendered="#{not empty medidorControl.medidorSelecionado}" paginator="true"
+	              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+	                       rowsPerPageTemplate="5,10,15">
+			    <p:column headerText="Cont/Salv">
+			        <h:outputText value="#{leitura.CONT_LeitDoPeriodoAtual_OU_SALV_LeitDoPeriodoAnterior}" />
+			    </p:column>
+			    <p:column headerText="NºB.dados">
+			        <h:outputText value="#{leitura.zero1NumeroBlocoDeDadosMemoriaDeMassa_}" />
+			    </p:column>
+			    <p:column headerText="1C 1P">
+			        <h:outputText value="#{leitura.valorDo1oCanallVisivelEmSeu1oPeriodo}" />
+			    </p:column>
+			    <p:column headerText="2C 1P">
+			        <h:outputText value="#{leitura.valorDo2oCanallVisivelEmSeu1oPeriodo}" />
+			    </p:column>
+			    <p:column headerText="3C 1P">
+			        <h:outputText value="#{leitura.valorDo3oCanallVisivelEmSeu1oPeriodo}" />
+			    </p:column>
+			    <p:column headerText="1C 2P">
+			        <h:outputText value="#{leitura.valorDo1oCanallVisivelEmSeu2oPeriodo}" />
+			    </p:column>
+			    <p:column headerText="2C 2P">
+			        <h:outputText value="#{leitura.valorDo2oCanallVisivelEmSeu2oPeriodo}" />
+			    </p:column>
+			    <p:column headerText="3C 2P">
+			        <h:outputText value="#{leitura.valorDo3oCanallVisivelEmSeu2oPeriodo}" />
+			    </p:column>
+			    <p:column headerText="1C 3P">
+			        <h:outputText value="#{leitura.valorDo1oCanallVisivelEmSeu3oPeriodo}" />
+			    </p:column>
+			    <p:column headerText="2C 3P">
+			        <h:outputText value="#{leitura.valorDo2oCanallVisivelEmSeu3oPeriodo}" />
+			    </p:column>
+			    <p:column headerText="3C 3P">
+			        <h:outputText value="#{leitura.valorDo3oCanallVisivelEmSeu3oPeriodo}" />
+			    </p:column>
+			    <p:column headerText="1C 4P">
+			        <h:outputText value="#{leitura.valorDo1oCanallVisivelEmSeu4oPeriodo}" />
+			    </p:column>
+			    <p:column headerText="2C 4P">
+			        <h:outputText value="#{leitura.valorDo2oCanallVisivelEmSeu4oPeriodo}" />
+			    </p:column>
+			    <p:column headerText="3C 4P">
+			        <h:outputText value="#{leitura.valorDo3oCanallVisivelEmSeu4oPeriodo}" />
+			    </p:column>
+			    <p:column headerText="1C 5P">
+			        <h:outputText value="#{leitura.valorDo1oCanallVisivelEmSeu5oPeriodo}" />
+			    </p:column>
+			    <p:column headerText="2C 5P">
+			        <h:outputText value="#{leitura.valorDo2oCanallVisivelEmSeu5oPeriodo}" />
+			    </p:column>
+			    <p:column headerText="3C 5P">
+			        <h:outputText value="#{leitura.valorDo3oCanallVisivelEmSeu5oPeriodo}" />
+			    </p:column>
+			    <p:column headerText="1C 6P">
+			        <h:outputText value="#{leitura.valorDo1oCanallVisivelEmSeu6oPeriodo}" />
+			    </p:column>
+			    <p:column headerText="2C 6P">
+			        <h:outputText value="#{leitura.valorDo2oCanallVisivelEmSeu6oPeriodo}" />
+			    </p:column>
+			    <p:column headerText="3C 6P">
+			        <h:outputText value="#{leitura.valorDo3oCanallVisivelEmSeu6oPeriodo}" />
+			    </p:column>
+			</p:dataTable>
+    	</p:dialog>
+	</ui:define>
+</ui:composition>

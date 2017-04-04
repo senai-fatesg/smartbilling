@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"> 
+
+<h:head></h:head> 
+<body>
+	<h:form>
+		<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+		<label>Nome</label>
+		<br/>
+		<p:inputText value="#{usuarioControl.usuario.nome}"/>
+		<br/>
+		<label>Email</label>
+		<br/>
+		<p:inputText value="#{usuarioControl.usuario.email}"/>
+		<br/>
+		<label>Login</label>
+		<br/>
+		<p:inputText value="#{usuarioControl.usuario.login}"/>
+		<br/>
+		<label>Senha</label>
+		<br/>
+		<p:password value="#{usuarioControl.usuario.senha}"/>
+		<br/>
+		<label>Confirme a senha</label>
+		<br/>
+		<p:password value="#{usuarioControl.usuario.confirmaSenha}"/>
+		<br/>
+		<label>Data Cadastro</label>
+		<br/>
+		<p:inputMask value="#{usuarioControl.usuario.dataCadastro}" mask="99/99/9999">
+			<f:convertDateTime pattern="dd/MM/yyyy" />
+		</p:inputMask>
+		<br/>
+		<label>Município</label>
+		<br/>
+		<p:autoComplete styleClass="obrigatorioAutoComplete" value="#{usuarioControl.usuarioAlterar.municipio}" minQueryLength="4"
+			completeMethod="#{usuarioControl.listarMunicipios}" itemValue="#{municipio}" itemLabel="#{municipio}" var="municipio" converter="enumConverter"
+			size="77" forceSelection="true">
+		</p:autoComplete>
+		<br/>
+		<br/>
+		<br/>
+		<p:commandButton value="Salvar" actionListener="#{usuarioControl.salvar}" update="messages"/>
+	</h:form>
+</body> 
+</html>

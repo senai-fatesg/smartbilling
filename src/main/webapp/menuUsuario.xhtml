@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a="http://www.ambientinformatica.com.br/jsf2"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<p:growl autoUpdate="true" id="growl" showDetail="true" sticky="true" />
+		<p:panelMenu style="background: #00B290 none repeat scroll 0 0;">
+	        <p:submenu label="Medidor">
+	        	<p:menuitem value="Memórias" url="/memoriaDeMassaList.jsf"/>
+	        </p:submenu>
+	        <p:submenu label="Consultas">
+	           <p:menuitem value="Leituras e insumos" url="/leituras.jsf"/>
+	        </p:submenu>
+	        <p:submenu label="Cadastros">
+	           <p:menuitem value="Usuários" url="/usuarioList.jsf"/>
+	        </p:submenu>
+	        <p:submenu label="Configurações">
+	        	<p:menuitem value="Auditoria"/>
+	        </p:submenu>
+    	</p:panelMenu>
+</ui:composition>

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ui:composition template="template.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a="http://www.ambientinformatica.com.br/jsf2" xmlns:p="http://primefaces.org/ui">
+	<ui:define name="corpo">
+		<p:panel widgetVar="panel" id="horizontal" header="Pesquisar usuários cadastradas" toggleable="true" toggleOrientation="horizontal">
+			<br/>
+			<br/>
+			<h:panelGrid columns="12">
+				<label>Nome</label>
+				<p:spacer width="10px"/>
+				<br/>
+				<p:inputText value="#{usuarioControl.nome}" style="width:500px;" placeholder="Digite aqui o nome ou parte do nome do usuário" />
+				<p:spacer width="10px"/>
+				<br/>
+				<p:commandButton actionListener="#{usuarioControl.listarPorNome}" value="Pesquisar" ajax="false" icon="ui-icon ui-icon-search" update="tblusuarios" />
+				<p:spacer width="10px"/>
+				<p:commandButton value="Limpar" ajax="false" action="usuarioList?faces-redirect=true" icon="ui-icon ui-icon-trash" />
+				<p:spacer width="10px"/>
+				<p:commandButton value="Cadastrar" icon="ui-icon-disk" oncomplete="PF('usuario').show()"/>
+				<p:spacer width="10px"/>
+			</h:panelGrid>
+		</p:panel>
+		<br/>
+		<p:dataTable id="tblusuarios" value="#{usuarioControl.usuarios }" var="usuario" emptyMessage="Sem registros" paginatorAlwaysVisible="false"
+			paginator="true" rows="20">
+			<br/>
+			<f:facet name="header">
+				<h:outputText value="Usuários cadastrados" />
+			</f:facet>
+
+			<p:column headerText="Nome">
+				<p:outputLabel value="#{usuario.nome }" />
+		   	</p:column>
+			<p:column headerText="E-mail">
+				<p:outputLabel value="#{usuario.email }" />
+         	</p:column>
+			<p:column headerText="Papeis">
+				<p:outputLabel value="#{usuario.papeis }" />
+			</p:column>
+			<p:column headerText="Confirmado" style="width: 120px">
+				<p:outputLabel value="#{usuario.status == true ? 'SIM' : 'NÃO' }" />
+			</p:column>
+			<p:column headerText="Editar" style="width: 100px">
+				<p:commandButton id="alterUsuario" icon="ui-icon-pencil" oncomplete="PF('usuarioEditar').show();"
+					actionListener="#{usuarioControl.editarUsuario(usuario) }" style="width: 80px">
+				</p:commandButton>
+			</p:column>
+		</p:dataTable>
+		<p:dialog id="usuario" header="Cadastro de usuário" widgetVar="usuario" dynamic="true">
+			<p:panel id="pnlUsuario">
+				<br/>
+				<label>Nome</label>
+				<br/>
+				<p:inputText value="#{usuarioControl.usuario.nome}"/>
+				
+				<label>Email</label>
+				<br/>
+				<p:inputText value="#{usuarioControl.usuario.email}"/>
+				<br/>
+				<label>Login</label>
+				<br/>
+				<p:inputText value="#{usuarioControl.usuario.login}"/>
+				<br/>
+				<br/>
+				<p:commandButton actionListener="#{usuarioControl.salvar}" value="Salvar" icon="ui-icon-disk" update=":formCorpo:usuario" oncomplete="PF('usuario').close();" />
+				<p:spacer width="10px"/>
+				<p:commandButton id="btnCancelar" icon="ui-icon-circle-close" oncomplete="PF('usuario').close();" value="Cancelar" update="usuario"/>
+				<br/>
+			</p:panel>
+		</p:dialog>
+
+		<p:dialog id="usuarioEditar" header="Editar Usuário" widgetVar="usuarioEditar" dynamic="true">
+			<p:panel id="pnlUsuarioEditar">
+				<br/>
+				<label>Nome</label>
+				<p:inputText styleClass="obrigatorio" value="#{usuarioControl.usuarioAlterar.nome}" style="width:380px;" />
+				<br/>
+				<label>Email</label>
+				<p:inputText styleClass="obrigatorio" value="#{usuarioControl.usuarioAlterar.email}" style="width:380px;" />
+				<br/>
+				<label>Município</label>
+				<p:autoComplete styleClass="obrigatorioAutoComplete" value="#{usuarioControl.usuarioAlterar.municipio}" minQueryLength="4"
+					completeMethod="#{usuarioControl.listarMunicipios}" itemValue="#{municipio}" itemLabel="#{municipio}" var="municipio"
+					size="150" forceSelection="true">
+				</p:autoComplete>
+				<p:separator/>
+	
+				<h4>Papeis do usuário</h4>
+				<br/>
+				<label>Adicionar papéis</label>
+				<p:selectOneMenu styleClass="obrigatorio" value="#{usuarioControl.papel}" style="width:320px;">
+					<f:selectItem itemLabel="Selecione" />
+					<f:selectItems value="#{usuarioControl.papeis }" />
+				</p:selectOneMenu>
+				<p:spacer width="10px"/>
+				<p:commandButton actionListener="#{usuarioControl.adicionarPapel}" icon="ui-icon-plus" update=":formCorpo:tblPapeis" style="margin-top: -15px"/>
+				<br/>
+				<p:dataTable id="tblPapeis" value="#{usuarioControl.usuarioAlterar.papeisList}" var="papel" style="width: 400px">
+					<f:facet name="header">
+		               Atribuições
+		            </f:facet>
+					<p:column headerText="Papel">
+		               #{papel.descricao}
+		            </p:column>
+					<p:column headerText="Excluir" style="width: 80px">
+						<p:commandButton icon="ui-icon-trash" actionListener="#{usuarioControl.removerPapel}" update=":formCorpo:tblPapeis" style="width: 45px; align: center">
+							<f:param value="#{papel}" id="papel" name="papel" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+				<br/>
+				<br/>
+				<p:commandButton actionListener="#{usuarioControl.alterar}" value="Salvar" ajax="false" icon="ui-icon-disk" update=":formCorpo:tblusuarios"
+					oncomplete="PF('usuarioEditar').close();" />
+				<p:spacer width="10px"/>
+				<p:commandButton id="btnCancelarTransf" icon="ui-icon-circle-close" actionListener="#{MenuControl.gerenciarSessao }" onclick="PF('usuarioEditar').close();" value="Cancelar" />
+				<br/>
+				<br/>
+			</p:panel>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

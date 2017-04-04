@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+<f:view contentType="text/html">
+	<head>
+<title>.:: Login ::.</title>
+<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+<link href="#{resource['images/favicon.ico']}" rel="shortcut icon" />
+<!-- <h:outputStylesheet name="css/bootstrap.css" /> -->
+<link href="resources/css/login.css" rel="stylesheet" />
+<link href="resources/css/bootstrap.css" rel="stylesheet" />
+	</head>
+	<body class="login">
+
+		<div class="container" style="margin-top: 70px">
+			<form action="j_spring_security_check" method="post">
+				<div class="well login-container quickSignupForm"
+					style="height: auto; min-height: 450px; width: 320px; max-width: 320px; margin: 0px auto; margin-top: 7%; padding: 0px; padding-top: 10px; padding-bottom: 20px;">
+					<div class="col-md-12"
+						style="min-height: 450px; height: auto; pafggtgdding-top: 20px;">
+
+						<div class="col-md-12" style="text-align: center">
+							<img src="resources/imagens/logo.png" alt="SMARTBILLING"
+								width="80" />
+						</div>
+						<div class="col-md-12" style="text-align: center">
+							<h4 style="padding-top: 10px;">Acesso ao sistema</h4>
+						</div>
+
+						<div class="col-md-12" style="margin-bottom: 5px; margin-top: 10px; text-align: center">
+							<label for="j_username">Login:</label> <input type="text"
+								id="username" name="j_username" class="form-control"
+								placeholder="Informe o login." required="true" autofocus="true" />
+						</div>
+						<div class="col-md-12" style="margin-bottom: 5px; text-align: center">
+							<label for="j_password">SENHA:</label> <input id="passoword"
+								name="j_password" class="form-control" type="password"
+								placeholder="Informe sua senha." />
+						</div>
+						<div class="col-md-12" style="margin-bottom: 10px; text-align: center">
+							<div class="col-md-6" style="padding-left: 0px; padding-right: 6px;">
+								<input class="btn btn-large btn-success btnSignup"
+									style="width: 70%;" type="submit" value="Entrar" />
+							</div>
+							<div class="col-md-6"
+								style="padding-left: 0px; padding-right: 50px; padding-top: 8px; text-align: right;">
+								<a href="#" onclick="recuperarSenha()" style="font-size: small;">Esqueceu
+									a senha?</a>
+							</div>
+
+						</div>
+					</div>
+				</div>
+
+			</form>
+
+		</div>
+
+	</body>
+</f:view>
+</html>
