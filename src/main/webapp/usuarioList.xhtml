@@ -79,11 +79,6 @@
 				<label>Email</label>
 				<p:inputText styleClass="obrigatorio" value="#{usuarioControl.usuarioAlterar.email}" style="width:380px;" />
 				<br/>
-				<label>Município</label>
-				<p:autoComplete styleClass="obrigatorioAutoComplete" value="#{usuarioControl.usuarioAlterar.municipio}" minQueryLength="4"
-					completeMethod="#{usuarioControl.listarMunicipios}" itemValue="#{municipio}" itemLabel="#{municipio}" var="municipio"
-					size="150" forceSelection="true">
-				</p:autoComplete>
 				<p:separator/>
 	
 				<h4>Papeis do usuário</h4>
@@ -114,7 +109,7 @@
 				<p:commandButton actionListener="#{usuarioControl.alterar}" value="Salvar" ajax="false" icon="ui-icon-disk" update=":formCorpo:tblusuarios"
 					oncomplete="PF('usuarioEditar').close();" />
 				<p:spacer width="10px"/>
-				<p:commandButton id="btnCancelarTransf" icon="ui-icon-circle-close" actionListener="#{MenuControl.gerenciarSessao }" onclick="PF('usuarioEditar').close();" value="Cancelar" />
+				<p:commandButton id="btnCancelarTransf" icon="ui-icon-circle-close" onclick="PF('usuarioEditar').close();" value="Cancelar" update=":formCorpo:pnlUsuarioEditar"/>
 				<br/>
 				<br/>
 			</p:panel>
