@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 
 import br.com.pid.smartbilling.model.FolhaDeLeitura;
 import br.com.pid.smartbilling.repository.FolhaLeituraDaoRepository;
@@ -27,22 +28,23 @@ public class FolhaLeituraControl {
 
 	@Autowired
 	private FolhaLeituraDaoRepository leituraRepository;
-	
+
 
 	@PostConstruct
 	public void init() {
-		listar();
+		//listar();
 	}
 
 	public void listar(){
 		leituras =  leituraRepository.findAll();
-		//new PageRequest(0, 50)
 	}
 
 	public void buscarPorUc(){
-		if (uc != null) {
-			FolhaDeLeitura leitura = leituraRepository.findByUc(uc);
+		FolhaDeLeitura leitura = leituraRepository.findByUc(uc);
+		if (leitura != null) {
 			leituras.add(leitura);
+		}else {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "Não existe registro com este número de uc."));
 		}
 	}
 

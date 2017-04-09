@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import javassist.bytecode.stackmap.TypeData.ClassName;
-
 import javax.inject.Inject;
 
 import org.springframework.context.annotation.ComponentScan;
@@ -21,6 +19,7 @@ import org.springframework.stereotype.Component;
 import br.com.pid.smartbilling.model.Usuario;
 import br.com.pid.smartbilling.repository.UsuarioDaoRepository;
 import br.com.pid.smartbilling.util.UtilMd5;
+import javassist.bytecode.stackmap.TypeData.ClassName;
 
 @Component
 @ComponentScan(basePackages = {"br.com.pid.smartbilling.config"})

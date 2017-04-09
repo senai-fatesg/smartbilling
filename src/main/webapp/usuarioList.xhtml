@@ -109,7 +109,7 @@
 				<p:commandButton actionListener="#{usuarioControl.alterar}" value="Salvar" ajax="false" icon="ui-icon-disk" update=":formCorpo:tblusuarios"
 					oncomplete="PF('usuarioEditar').close();" />
 				<p:spacer width="10px"/>
-				<p:commandButton id="btnCancelarTransf" icon="ui-icon-circle-close" onclick="PF('usuarioEditar').close();" value="Cancelar" update=":formCorpo:pnlUsuarioEditar"/>
+				<p:commandButton id="btnCancelarTransf" icon="ui-icon-circle-close" actionListener="#{MenuControl.gerenciarSessao }" onclick="PF('usuarioEditar').close();" value="Cancelar" />
 				<br/>
 				<br/>
 			</p:panel>

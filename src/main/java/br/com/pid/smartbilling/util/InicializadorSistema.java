@@ -3,8 +3,6 @@ package br.com.pid.smartbilling.util;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javassist.bytecode.stackmap.TypeData.ClassName;
-
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +12,7 @@ import br.com.pid.smartbilling.model.EnumPapelUsuario;
 import br.com.pid.smartbilling.model.Usuario;
 import br.com.pid.smartbilling.repository.MunicipioDaoRepository;
 import br.com.pid.smartbilling.repository.UsuarioDaoRepository;
-
+import javassist.bytecode.stackmap.TypeData.ClassName;
 
 
 @Service("inicializadorSistema")

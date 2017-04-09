@@ -1,17 +1,17 @@
 package br.com.pid.smartbilling.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
-public class FolhaDeLeitura {
+public class FolhaDeLeitura implements Serializable{
+
+   private static final long serialVersionUID = 1L;
 	
-	
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Id
 	private String id;
 	private String medidor;
 	private String mesano;
@@ -27,7 +27,7 @@ public class FolhaDeLeitura {
 	private Date dt_apresentacao;
 	private String consumidor;
 	private String divisa;
-	private Integer uc;
+	private Integer uc;;
 	private Integer input_type_id;
 	private Date classification;
 	private String description;
@@ -183,6 +183,12 @@ public class FolhaDeLeitura {
 	public void setId(String id) {
 		this.id = id;
 	}
+	public Integer getUc() {
+		return uc;
+	}
+	public void setUc(Integer uc) {
+		this.uc = uc;
+	}
 	public String getMedidor() {
 		return medidor;
 	}
@@ -266,12 +272,6 @@ public class FolhaDeLeitura {
 	}
 	public void setDivisa(String divisa) {
 		this.divisa = divisa;
-	}
-	public Integer getUc() {
-		return uc;
-	}
-	public void setId(Integer uc) {
-		this.uc = uc;
 	}
 	public Integer getInput_type_id() {
 		return input_type_id;

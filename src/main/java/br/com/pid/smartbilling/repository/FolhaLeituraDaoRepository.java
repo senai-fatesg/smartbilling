@@ -10,5 +10,4 @@ public interface FolhaLeituraDaoRepository extends MongoRepository<FolhaDeLeitur
 	@Query("{ 'uc' : ?0 }")
 	FolhaDeLeitura findByUc(Integer uc);
 
-
 }
