@@ -5,17 +5,15 @@
 	
 	<p:growl autoUpdate="true" id="growl" showDetail="true" sticky="true" />
 		<p:panelMenu style="background: #00B290 none repeat scroll 0 0;">
-	        <p:submenu label="Medidor">
+	        <p:submenu label="Arquivos">
 	        	<p:menuitem value="Memórias" url="/memoriaDeMassaList.jsf"/>
+	        	<p:menuitem value="Dados de consumo" url="/migrador.jsf"/>
 	        </p:submenu>
 	        <p:submenu label="Consultas">
-	           <p:menuitem value="Leituras e insumos" url="/leituras.jsf"/>
+	           <p:menuitem value="Perfil de consumo" url="/perfilConsumo.jsf"/>
 	        </p:submenu>
 	        <p:submenu label="Cadastros">
 	           <p:menuitem value="Usuários" url="/usuarioList.jsf"/>
-	        </p:submenu>
-	        <p:submenu label="Configurações">
-	        	<p:menuitem value="Auditoria"/>
 	        </p:submenu>
     	</p:panelMenu>
 </ui:composition>

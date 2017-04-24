@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ui:composition template="template.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a="http://www.ambientinformatica.com.br/jsf2"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:define name="corpo">
+	
+		<p:growl id="msgs" showDetail="true" />
+		<p:panel id="pnlMigrador" header="Migrador de dados">
+			<br/>
+			<br/>
+			<div>
+	   			<p:fileUpload label="Selecionar arquivo" value="#{migradorControl.file}" mode="simple" skinSimple="true"/>
+	   		</div>
+	   		<br/>
+	   		<div style="margin-top: -15px">
+	   			<p:commandButton value="Carregar dados" ajax="false" actionListener="#{migradorControl.getUpload}"  icon="ui-icon-disk" style="width: 180px"/>
+	   		</div>
+			<br/>
+	 
+		    <h3 style="margin-top: 0">Basic PickList</h3>
+		    <p:pickList id="pickList" value="#{migradorControl.dados}" var="dados" itemLabel="#{dados}" itemValue="#{dados}" />
+		 
+		    <p:commandButton id="citySubmit" value="Submit" update="displayCities" oncomplete="PF('cityDialog').show()" style="margin-top:5px" />
+		 
+		 
+		    <p:dialog modal="true" showEffect="fade" hideEffect="fade" widgetVar="cityDialog">
+		        <h:panelGrid id="displayCities" columns="2">
+		            <h:outputText value="Source: " style="font-weight:bold" />
+		             <ui:repeat value="#{migradorControl.dados.source}" var="item">
+		                <h:outputText value="#{item}" style="margin-right:5px" />
+		            </ui:repeat>
+		 
+		            <h:outputText value="Target: " style="font-weight:bold" />
+		            <ui:repeat value="#{migradorControl.dados.target}" var="item">
+		                <h:outputText value="#{item}" style="margin-right:5px" />
+		            </ui:repeat>
+		        </h:panelGrid>
+		    </p:dialog>
+	    </p:panel>
+	</ui:define>
+</ui:composition>
