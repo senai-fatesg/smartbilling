@@ -20,6 +20,7 @@ import br.com.pid.smartbilling.model.Municipio;
 import br.com.pid.smartbilling.model.Usuario;
 import br.com.pid.smartbilling.repository.MunicipioDaoRepository;
 import br.com.pid.smartbilling.repository.UsuarioDaoRepository;
+import br.com.pid.smartbilling.util.UtilMd5;
 
 @Named
 @ViewScoped
@@ -38,6 +39,9 @@ public class UsuarioControl {
 	private String senha2;
 
 	private EnumUf uf;
+
+	@Autowired
+	private UsuarioLogadoControl usuarioLogadoControl;
 
 	@Autowired
 	private MunicipioDaoRepository municipioDao;
@@ -133,6 +137,33 @@ public class UsuarioControl {
 
 	public void editarUsuario(Usuario usuarioParam){
 		this.usuarioAlterar = usuarioParam;
+	}
+
+	public String alterarSenha() {
+		try {
+			String senhaAtualCripto = UtilMd5.gerarMd5(usuario.getConfirmaSenha());
+			//String senhaAtualCripto = UtilHash.gerarStringHash(confirmarSenha, Algoritimo.MD5);
+			Usuario usuarioLogado = usuarioLogadoControl.getUsuario();
+			if (senhaAtualCripto.equals(usuarioLogado.getSenha())) {
+				if (senha1 != null && senha1.equals(senha2)) {
+					usuarioLogado.setSenhaNaoCriptografada(senha1);
+					//usuarioDao.alterar(usuarioLogada);
+					FacesMessage message = new FacesMessage("Usuário", usuario.getNome() + " senha alterada com sucesso.");
+					FacesContext.getCurrentInstance().addMessage(null, message);
+					return "inicio.jsf";
+				} else {
+					FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, null, "Senhas diferentes.");
+					FacesContext.getCurrentInstance().addMessage(null, message);
+				}
+			} else {
+				FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, null, "Senha atual incorreta.");
+				FacesContext.getCurrentInstance().addMessage(null, message);
+			}
+		} catch (Exception e) {
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), "Erro ao alterar as senhas.");
+			FacesContext.getCurrentInstance().addMessage(null, message);;
+		}
+		return "alterarSenha.secima";
 	}
 
 	public List<EnumPapelUsuario> getPapeis(){

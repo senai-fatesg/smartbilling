@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="template.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a="http://www.ambientinformatica.com.br/jsf2"
+	xmlns:p="http://primefaces.org/ui">	
+	<ui:define name="corpo">
+		<p:panel id="pnlCadastro" header="Cadastro de SQL's" style="heigth: 100%">
+			<br/>
+			<br/>
+			<label>Descrição</label>
+			<p:inputText value="#{sqlControl.sql.descricao}" style="width: 600px"/>
+			<br/>
+			<label>SQL</label>
+			<p:inputTextarea value="#{sqlControl.sql.sql}" style="width: 600px"/>
+			<br/>
+			<br/>
+			<p:commandButton id="btnConfirmar" icon="ui-icon-disk" value="Salvar" actionListener="#{sqlControl.confirmar}" update=":formCorpo:pnlCadastro, :formCorpo:tblSqls"/>
+			<br/>
+			<br/>
+			<p:dataTable id="tblSqls" emptyMessage="Não existe registros." var="sql" value="#{sqlControl.sqls}">
+				<p:column headerText="Id" style="text-align: center; width: 180px">
+					<h:outputText value="#{sql.id}" />
+				</p:column>
+				<p:column headerText="Descrição" style="text-align: center; width: 300px">
+					<h:outputText value="#{sql.descricao}" />
+				</p:column>
+				<p:column headerText="Sql" style="text-align: center">
+					<h:outputText value="#{sql.sql}" />
+				</p:column>
+			</p:dataTable>
+		</p:panel>
+
+	</ui:define>
+</ui:composition>
