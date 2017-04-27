@@ -6,9 +6,9 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
@@ -23,7 +23,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.context.Theme;
 
 import br.com.pid.smartbilling.model.PerfilConsumo;
+import br.com.pid.smartbilling.model.Sql;
 import br.com.pid.smartbilling.repository.PerfilConsumoDaoRespository;
+import br.com.pid.smartbilling.repository.SqlDaoRepository;
 
 @Named
 @ViewScoped
@@ -33,20 +35,33 @@ public class MigradorControl {
 	
 	private UploadedFile file;
 	
+	private String sql;
+	
 	private PerfilConsumo perfilConsumo = new PerfilConsumo();
 	
 	private List<String> dadosSource = new ArrayList<String>();
+	
 	private List<String> dadosTarget = new ArrayList<String>();
+	
+	private List<Sql> sqls = new ArrayList<>();
 	
 	@Autowired
 	private PerfilConsumoDaoRespository perfilConsumoDao;
-
+	
+	@Autowired
+	private SqlDaoRepository sqlDao;
+	
+	
+	@PostConstruct
+	public void init(){
+		listarSqls();
+	}
 
 	public void getUpload() {
 		if(file != null) {
 			File newFile = convert(file);
 			lerArquivo(newFile);
-			FacesMessage message = new FacesMessage("Succesful", file.getFileName() + " is uploaded.");
+			FacesMessage message = new FacesMessage("Upload realizado com sucesso.", file.getFileName() + " is uploaded.");
 			FacesContext.getCurrentInstance().addMessage(null, message);
 		}
 	}
@@ -65,7 +80,6 @@ public class MigradorControl {
 	}
 
 	public void lerArquivo(File file){
-
 
 		try {
 			FileReader fr = new FileReader(file);
@@ -295,12 +309,25 @@ public class MigradorControl {
 		FacesContext context = FacesContext.getCurrentInstance();
 		context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "List Reordered", null));
 	}
+	
+	public void listarSqls(){
+		this.sqls = sqlDao.findAll();
+	}
+	
 	public UploadedFile getFile() {
 		return file;
 	}
 
 	public void setFile(UploadedFile file) {
 		this.file = file;
+	}
+
+	public String getSql() {
+		return sql;
+	}
+
+	public void setSql(String sql) {
+		this.sql = sql;
 	}
 
 	public List<String> getDadosSource() {
@@ -317,6 +344,10 @@ public class MigradorControl {
 
 	public void setDadosTarget(List<String> dadosTarget) {
 		this.dadosTarget = dadosTarget;
+	}
+
+	public List<Sql> getSqls() {
+		return sqls;
 	}
 	
 }

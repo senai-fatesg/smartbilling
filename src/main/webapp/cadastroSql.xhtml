@@ -4,6 +4,7 @@
 	xmlns:p="http://primefaces.org/ui">	
 	<ui:define name="corpo">
 		<p:panel id="pnlCadastro" header="Cadastro de SQL's" style="heigth: 100%">
+		<p:growl id="msgs" showDetail="true" />
 			<br/>
 			<br/>
 			<label>Descrição</label>
@@ -25,6 +26,12 @@
 				</p:column>
 				<p:column headerText="Sql" style="text-align: center">
 					<h:outputText value="#{sql.sql}" />
+				</p:column>
+				<p:column headerText="Editar" style="width: 50px; text-align: center;">
+					<p:commandButton icon="ui-icon-pencil" actionListener="#{sqlControl.editar(sql)}" update=":formCorpo:pnlCadastro"/>
+				</p:column>
+				<p:column headerText="Excluir" style="width: 50px; text-align: center;">
+					<p:commandButton icon="ui-icon-close" actionListener="#{sqlControl.excluir(sql)}" update=":formCorpo:pnlCadastro"/>
 				</p:column>
 			</p:dataTable>
 		</p:panel>
