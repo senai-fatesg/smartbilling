@@ -21,6 +21,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<start-class>br.com.pid.SmartbillingApplication</start-class>
 		<java.version>1.8</java.version>
 		<all-themes.version>1.0.10</all-themes.version>
 		<spring-data-oracle.version>1.0.0.RELEASE</spring-data-oracle.version>
@@ -54,10 +55,24 @@
 		    <artifactId>primefaces</artifactId>
 		</dependency>
 		
+		<!-- Includes spring's support classes for quartz -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.liquibase</groupId>
+			<artifactId>liquibase-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+			<version>2.2.1</version>
+		</dependency>
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-			<scope>runtime</scope>
+			<!-- <scope>runtime</scope> -->
 		</dependency>
 		<dependency>
 			<groupId>org.postgresql</groupId>
