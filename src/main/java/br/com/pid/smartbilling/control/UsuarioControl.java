@@ -73,8 +73,11 @@ public class UsuarioControl {
 			this.usuario.setMunicipio(municipio);
 			this.usuario.getPapeis().add(EnumPapelUsuario.USUARIO);
 			usuarioDaoRepository.save(usuario);
-		}else{
+			listar();
 			FacesMessage message = new FacesMessage("Usuário", usuario.getNome() + " salvo com sucesso.");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+		}else{
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro ao salvar ", " verifique os campos preenchidos");
 			FacesContext.getCurrentInstance().addMessage(null, message);
 		}
 	}
