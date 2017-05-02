@@ -21,8 +21,19 @@
 				<p:outputLabel for="console" value="Sql:" />
 				<p:selectOneMenu id="console" value="#{migradorControl.sql}" style="width:380px">
 					<f:selectItem itemLabel="Selecione..." noSelectionOption="true"/>
-					<f:selectItems value="#{migradorControl.sqls}" var="sql" itemLabel="#{sql.descricao}" itemValue="#{sql.descricao}" />
+					<f:selectItems value="#{migradorControl.sqls}" var="sql" itemLabel="#{sql.sql}" itemValue="#{sql.sql}" />
 				</p:selectOneMenu>
+				<div style="margin-left: 10px">
+					<p:commandButton value="Migrar dados" update=":formCorpo:pickList" actionListener="#{migradorControl.executarSql}" icon="ui-icon-disk"
+						style="width: 180px" />
+				</div>
+				<div>
+					<h3 style="margin-top: 0">Basic PickList</h3>
+					<p:pickList id="pickList" value="#{migradorControl.dados}" var="dados" itemLabel="#{dados}" itemValue="#{dados}" />
+		
+					<p:commandButton id="citySubmit" value="Submit" update="displayColumns" oncomplete="PF('dlgMigrador').show()" style="margin-top:5px" />
+				</div>
+				
 			</h:panelGrid>
 			<h:panelGrid id="pngFile" columns="2" style="margin-bottom:10px" cellpadding="5" rendered="#{migradorControl.migrarCsv eq 'true'}">
 				<div>

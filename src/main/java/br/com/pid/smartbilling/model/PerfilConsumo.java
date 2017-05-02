@@ -1,8 +1,14 @@
 package br.com.pid.smartbilling.model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
+@Entity
 public class PerfilConsumo {
 
 
@@ -19,7 +25,9 @@ public class PerfilConsumo {
 	private String origem;                       
 	private String dt_apresentacao;            
 	private String consumidor;                   
-	private String divisa;                       
+	private String divisa;
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;                           
 	private Integer input_type_id;                
 	private String classification;               

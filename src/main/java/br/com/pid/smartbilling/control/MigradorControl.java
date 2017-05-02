@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -14,7 +15,6 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
-import org.hibernate.loader.custom.Return;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.TransferEvent;
 import org.primefaces.event.UnselectEvent;
@@ -23,6 +23,7 @@ import org.primefaces.model.UploadedFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.context.Theme;
 
+import br.com.pid.smartbilling.daoJdbc.PerfilConsumoDaoJdbc;
 import br.com.pid.smartbilling.model.PerfilConsumo;
 import br.com.pid.smartbilling.model.Sql;
 import br.com.pid.smartbilling.repository.PerfilConsumoDaoRespository;
@@ -50,6 +51,11 @@ public class MigradorControl {
 
 	@Autowired
 	private PerfilConsumoDaoRespository perfilConsumoDao;
+	
+	private PerfilConsumoDaoJdbc perfilConsumoDaoJdbc = new PerfilConsumoDaoJdbc();
+	
+//	@Autowired
+//	private PerfilConsumoOracleRepository perfilConsumoOracleDao;
 
 	@Autowired
 	private SqlDaoRepository sqlDao;
@@ -290,6 +296,13 @@ public class MigradorControl {
 		}
 	}
 
+	public void executarSql(){
+		List<Map<String, Object>> listMap = perfilConsumoDaoJdbc.consultarPersonalizado(sql);
+		Map<String, Object> mapa = listMap.get(0);
+		dadosSource = new ArrayList<>(mapa.keySet());
+		dados = new DualListModel<String>(dadosSource, dadosTarget);
+		
+	}
 
 	public DualListModel<String> getDados() {
 		return dados;
@@ -375,6 +388,15 @@ public class MigradorControl {
 	public void setMigrarCsv(boolean migrarCsv) {
 		this.migrarCsv = migrarCsv;
 	}
+
+	public PerfilConsumoDaoJdbc getPerfilConsumoDaoJdbc() {
+		return perfilConsumoDaoJdbc;
+	}
+
+	public void setPerfilConsumoDaoJdbc(PerfilConsumoDaoJdbc perfilConsumoDaoJdbc) {
+		this.perfilConsumoDaoJdbc = perfilConsumoDaoJdbc;
+	}
+	
 
 }
 
