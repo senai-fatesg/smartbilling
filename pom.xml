@@ -26,6 +26,7 @@
 		<all-themes.version>1.0.10</all-themes.version>
 		<spring-data-oracle.version>1.0.0.RELEASE</spring-data-oracle.version>
 		<primefaces.version>6.1</primefaces.version>
+		<resources-codemirror.version>6.1.0</resources-codemirror.version>
 	</properties>
 
 	<dependencies>
@@ -53,6 +54,10 @@
 		<dependency>
 			<groupId>org.primefaces</groupId>
 			<artifactId>primefaces</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.primefaces.extensions</groupId>
+			<artifactId>resources-codemirror</artifactId>
 		</dependency>
 
 		<!-- Includes spring's support classes for quartz -->

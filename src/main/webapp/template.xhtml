@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui">
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui" xmlns:pe="http://primefaces.org/ui/extensions">
 	<h:head>
 		<title>Smartbilling</title>
 	<link href="resources/css/bootstrap.css" rel="stylesheet" />
@@ -32,28 +32,26 @@
 	</style>
 	</h:head>
 	<h:body>
-		<p:layout fullPage="true" onToggle="true">
-			<div class="content-fluid">
-				<p:layoutUnit position="north" size="60"  >
-					<div style="position: absolute; z-index: -1; top: 0; left: 0; width: 100%; height: 100%; background: url('#{request.contextPath}/imagens/background-pattern.png') center center; background-size: 200 200; ">
-						<ui:include src="/menuTopo.xhtml"></ui:include>
-					</div>
-				</p:layoutUnit>
-			</div>
-			<p:layoutUnit position="west" resizable="true"  closable="true" collapsible="true" size="200" style="margin-left: -10px;">
+		<pe:layout fullPage="true" options="#{templateControl.layoutOptionsOne}" rendered="#{templateControl.layoutOneShown}"  
+                   state="#{templateControl.stateOne}">
+			<pe:layoutPane position="north">
+				<div style="width: 99.8%; heigth: 50px; background: url('#{request.contextPath}/imagens/background-pattern.png') center center; background-size: 200 200; ">
+					<ui:include src="/menuTopo.xhtml"></ui:include>
+				</div>
+			</pe:layoutPane>
+			<pe:layoutPane position="west" resizable="true" closable="true" collapsible="true" style="margin-left: -10px;">
 				<h:form>
 					<div id="divlay" style="position: absolute; z-index: -1; top: 0; left: 0; width: 100%; height: 100%; background: url('#{request.contextPath}/imagens/background-pattern.png') center center; background-size: 200 200; ">
 					</div>
 					<ui:include src="/menuUsuario.xhtml" />
 				</h:form>
-			</p:layoutUnit>
-			<p:layoutUnit  position="center">
+			</pe:layoutPane>
+			<pe:layoutPane  position="center">
 				<h:form id="formCorpo" enctype="multipart/form-data">
-					<p:messages id="message" closable="true
-					"/>
+					<p:messages id="message" closable="true"/>
 					<ui:insert name="corpo"/>
 				</h:form>
-			</p:layoutUnit>
-		</p:layout>
+			</pe:layoutPane>
+		</pe:layout>
 	</h:body>
 </html>

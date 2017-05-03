@@ -31,7 +31,7 @@
 					<h3 style="margin-top: 0">Basic PickList</h3>
 					<p:pickList id="pickList" value="#{migradorControl.dados}" var="dados" itemLabel="#{dados}" itemValue="#{dados}" />
 		
-					<p:commandButton id="citySubmit" value="Submit" update="displayColumns" oncomplete="PF('dlgMigrador').show()" style="margin-top:5px" />
+					<p:commandButton id="citySubmit" value="Consultar colunas selecionadas" actionListener="#{migradorControl.executarSqlComColunasSelecionadas}" style="margin-top:5px" />
 				</div>
 				
 			</h:panelGrid>
@@ -54,18 +54,5 @@
 				
 			</h:panelGrid>
 		</p:panel>
-		<p:dialog showEffect="fade" hideEffect="fade" widgetVar="dlgMigrador">
-			<h:panelGrid id="displayColumns" columns="2">
-				<h:outputText value="Source: " style="font-weight:bold" />
-				<ui:repeat value="#{migradorControl.dados.source}" var="item">
-					<h:outputText value="#{item}" style="margin-right:5px" />
-				</ui:repeat>
-
-				<h:outputText value="Target: " style="font-weight:bold" />
-				<ui:repeat value="#{migradorControl.dados.target}" var="item">
-					<h:outputText value="#{item}" style="margin-right:5px" />
-				</ui:repeat>
-			</h:panelGrid>
-		</p:dialog>
 	</ui:define>
 </ui:composition>

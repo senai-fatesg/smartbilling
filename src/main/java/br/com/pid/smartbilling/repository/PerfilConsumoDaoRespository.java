@@ -12,5 +12,5 @@ public interface PerfilConsumoDaoRespository extends MongoRepository<PerfilConsu
 	
 	@Query("{$and:[{_id: ?0},{dt_leitura: ?1}]}")
 	PerfilConsumo findByUcAndDataLeitura(Integer id, String dt_leitura);
-
+	
 }

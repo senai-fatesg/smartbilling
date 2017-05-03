@@ -5,9 +5,15 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javassist.ClassPool;
+import javassist.CtClass;
+import javassist.CtField;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -21,11 +27,16 @@ import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.DualListModel;
 import org.primefaces.model.UploadedFile;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.ui.context.Theme;
 
 import br.com.pid.smartbilling.daoJdbc.PerfilConsumoDaoJdbc;
+import br.com.pid.smartbilling.model.EntidadeVazia;
 import br.com.pid.smartbilling.model.PerfilConsumo;
+import br.com.pid.smartbilling.model.ReflectionTeste;
 import br.com.pid.smartbilling.model.Sql;
+import br.com.pid.smartbilling.repository.EntidadeVaziaDaoRepository;
+import br.com.pid.smartbilling.repository.MunicipioDaoRepository;
 import br.com.pid.smartbilling.repository.PerfilConsumoDaoRespository;
 import br.com.pid.smartbilling.repository.SqlDaoRepository;
 
@@ -49,13 +60,23 @@ public class MigradorControl {
 
 	private List<Sql> sqls = new ArrayList<>();
 
+	List<Map<String, Object>> listMap = new ArrayList<>();
+
 	@Autowired
 	private PerfilConsumoDaoRespository perfilConsumoDao;
+
+	@Autowired
+	private MunicipioDaoRepository municipioDao;
 	
+	@Autowired
+	private EntidadeVaziaDaoRepository entidadeVaziaDao;
+
 	private PerfilConsumoDaoJdbc perfilConsumoDaoJdbc = new PerfilConsumoDaoJdbc();
 	
-//	@Autowired
-//	private PerfilConsumoOracleRepository perfilConsumoOracleDao;
+	
+
+	//	@Autowired
+	//	private PerfilConsumoOracleRepository perfilConsumoOracleDao;
 
 	@Autowired
 	private SqlDaoRepository sqlDao;
@@ -297,11 +318,65 @@ public class MigradorControl {
 	}
 
 	public void executarSql(){
-		List<Map<String, Object>> listMap = perfilConsumoDaoJdbc.consultarPersonalizado(sql);
+		listMap = perfilConsumoDaoJdbc.consultarPersonalizado(sql);
 		Map<String, Object> mapa = listMap.get(0);
 		dadosSource = new ArrayList<>(mapa.keySet());
 		dados = new DualListModel<String>(dadosSource, dadosTarget);
+
+
+	}
+
+	public void executarSqlComColunasSelecionadas(){
 		
+		EntidadeVazia entidade = new EntidadeVazia();
+
+		try {
+			CtClass point = ClassPool.getDefault().get("br.com.pid.smartbilling.model.EntidadeVazia");
+			CtClass tipoString = ClassPool.getDefault().get("java.lang.String");
+			CtClass tipoInteger = ClassPool.getDefault().get("java.lang.Integer");
+			CtClass tipoDate = ClassPool.getDefault().get("java.util.Date");
+			CtClass tipoLong = ClassPool.getDefault().get("java.lang.Long");
+			CtClass tipoBigDecimal = ClassPool.getDefault().get("java.math.BigDecimal");
+
+			List<String> targets = dados.getTarget();
+
+			for (String colunaSelecionada : targets) {
+				if (listMap.get(0).get(colunaSelecionada) instanceof String) {
+					CtField f = new CtField(tipoString, colunaSelecionada, point);
+					point.addField(f);
+				}
+				if (listMap.get(0).get(colunaSelecionada) instanceof Integer) {
+					CtField f = new CtField(tipoInteger, colunaSelecionada, point);
+					point.addField(f);
+				}
+				if (listMap.get(0).get(colunaSelecionada) instanceof java.util.Date) {
+					CtField f = new CtField(tipoDate, colunaSelecionada, point);
+					point.addField(f);
+				}
+				if (listMap.get(0).get(colunaSelecionada) instanceof Long) {
+					CtField f = new CtField(tipoLong, colunaSelecionada, point);
+					point.addField(f);
+				}
+				if (listMap.get(0).get(colunaSelecionada) instanceof BigDecimal) {
+					CtField f = new CtField(tipoBigDecimal, colunaSelecionada, point);
+					point.addField(f);
+				}
+			}
+
+			point.writeFile();
+			Class newClass = point.toClass(entidade.getClass().getClassLoader());
+			for (Map<String, Object> map : listMap) {
+				EntidadeVazia objNewClass  = (EntidadeVazia) newClass.newInstance();
+				//EntidadeVazia mobj = EntidadeVazia.class.cast(objNewClass);
+				for (String colunaSelecionada : targets) {
+					ReflectionTeste.set(objNewClass, colunaSelecionada, map.get(colunaSelecionada));
+				}
+				entidadeVaziaDao.save(objNewClass);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public DualListModel<String> getDados() {
@@ -396,7 +471,19 @@ public class MigradorControl {
 	public void setPerfilConsumoDaoJdbc(PerfilConsumoDaoJdbc perfilConsumoDaoJdbc) {
 		this.perfilConsumoDaoJdbc = perfilConsumoDaoJdbc;
 	}
-	
+
+	public PerfilConsumo getPerfilConsumo() {
+		return perfilConsumo;
+	}
+
+	public void setPerfilConsumo(PerfilConsumo perfilConsumo) {
+		this.perfilConsumo = perfilConsumo;
+	}
+
+	public List<Map<String, Object>> getListMap() {
+		return listMap;
+	}
+
 
 }
 
