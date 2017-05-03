@@ -18,48 +18,6 @@ public class PerfilConsumoDaoJdbc{
 
 	UtilConexao connection = new UtilConexao();
 
-	public List<PerfilConsumo> listarDados() {
-
-		List<PerfilConsumo> dados = new ArrayList<>();
-		String sql = "select * municipio";
-		Connection con = null;
-		try{
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			con = DriverManager.getConnection("jdbc:oracle:thin:@10.5.2.24:1521:XE", "root", "123456");
-			Statement st = con.createStatement();
-			ResultSet rs = st.executeQuery(sql);
-			while (rs.next()) {
-
-			}
-		}catch(Exception e){
-			e.printStackTrace();
-		}finally{
-			try{
-				if(con!=null)
-					con.close();
-			}catch(Exception e){}
-		}
-		return dados;
-	}
-
-	public void save(PerfilConsumo perfilConsumo)throws Exception{
-
-		//String sql = "insert into perfilConsumo () values("+empNo+", '"+name+"',"+sal+","+dNo+")";
-		Connection con = null;
-		try{
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			con = DriverManager.getConnection("jdbc:oracle:thin:@10.5.2.24:1521:XE", "root", "123456");
-			Statement st = con.createStatement();
-			//st.executeUpdate(sql);
-		}catch(Exception e){
-			e.printStackTrace();
-		}finally{
-			try{
-				if(con!=null)
-					con.close();
-			}catch(Exception e){}
-		}
-	}
 
 	public List<Map<String, Object>> consultarPersonalizado(String sql){
 
@@ -113,7 +71,7 @@ public class PerfilConsumoDaoJdbc{
 		Connection con = null;
 		PreparedStatement preparedStatement = null;
 		try{
-			String sql = "select * municipio";
+			String sql = "";
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			con = DriverManager.getConnection("jdbc:oracle:thin:@10.5.2.24:1521:XE", "root", "123456");
 			preparedStatement = con.prepareStatement(sql);
