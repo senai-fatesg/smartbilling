@@ -5,9 +5,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,28 +27,29 @@ import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.DualListModel;
 import org.primefaces.model.UploadedFile;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.ui.context.Theme;
 
 import br.com.pid.smartbilling.daoJdbc.PerfilConsumoDaoJdbc;
-import br.com.pid.smartbilling.model.EntidadeVazia;
 import br.com.pid.smartbilling.model.PerfilConsumo;
-import br.com.pid.smartbilling.model.ReflectionTeste;
 import br.com.pid.smartbilling.model.Sql;
-import br.com.pid.smartbilling.repository.EntidadeVaziaDaoRepository;
-import br.com.pid.smartbilling.repository.MunicipioDaoRepository;
 import br.com.pid.smartbilling.repository.PerfilConsumoDaoRespository;
 import br.com.pid.smartbilling.repository.SqlDaoRepository;
+import br.com.pid.smartbilling.util.Reflection;
 
 @Named
 @ViewScoped
-public class MigradorControl {
+public class MigradorControl implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 
 	private DualListModel<String> dados = new DualListModel<>();
 
 	private UploadedFile file;
 
 	private String sql;
+
+	private String nomeCollection;
 
 	private boolean migrarCsv;
 
@@ -61,22 +62,17 @@ public class MigradorControl {
 	private List<Sql> sqls = new ArrayList<>();
 
 	List<Map<String, Object>> listMap = new ArrayList<>();
-
+	
+	private static Class newClass;
+	
 	@Autowired
 	private PerfilConsumoDaoRespository perfilConsumoDao;
+	
 
 	@Autowired
-	private MunicipioDaoRepository municipioDao;
-	
-	@Autowired
-	private EntidadeVaziaDaoRepository entidadeVaziaDao;
+	private MongoTemplate mongoTemplate;
 
 	private PerfilConsumoDaoJdbc perfilConsumoDaoJdbc = new PerfilConsumoDaoJdbc();
-	
-	
-
-	//	@Autowired
-	//	private PerfilConsumoOracleRepository perfilConsumoOracleDao;
 
 	@Autowired
 	private SqlDaoRepository sqlDao;
@@ -326,18 +322,20 @@ public class MigradorControl {
 
 	}
 
-	public void executarSqlComColunasSelecionadas(){
-		
-		EntidadeVazia entidade = new EntidadeVazia();
-
+	public void gravarDadosNoMongodb(){
+		CtClass point = null;
 		try {
-			CtClass point = ClassPool.getDefault().get("br.com.pid.smartbilling.model.EntidadeVazia");
+			point = ClassPool.getDefault().get("br.com.pid.smartbilling.model.EntidadeGenerica");
 			CtClass tipoString = ClassPool.getDefault().get("java.lang.String");
 			CtClass tipoInteger = ClassPool.getDefault().get("java.lang.Integer");
 			CtClass tipoDate = ClassPool.getDefault().get("java.util.Date");
 			CtClass tipoLong = ClassPool.getDefault().get("java.lang.Long");
 			CtClass tipoBigDecimal = ClassPool.getDefault().get("java.math.BigDecimal");
+			CtClass tipoBoolean = ClassPool.getDefault().get("java.lang.Boolean");
+			CtClass tipoDouble = ClassPool.getDefault().get("java.lang.Double");
+			CtClass tipoFloat = ClassPool.getDefault().get("java.lang.Float");
 
+			point.defrost();
 			List<String> targets = dados.getTarget();
 
 			for (String colunaSelecionada : targets) {
@@ -361,21 +359,44 @@ public class MigradorControl {
 					CtField f = new CtField(tipoBigDecimal, colunaSelecionada, point);
 					point.addField(f);
 				}
-			}
-
-			point.writeFile();
-			Class newClass = point.toClass(entidade.getClass().getClassLoader());
-			for (Map<String, Object> map : listMap) {
-				EntidadeVazia objNewClass  = (EntidadeVazia) newClass.newInstance();
-				//EntidadeVazia mobj = EntidadeVazia.class.cast(objNewClass);
-				for (String colunaSelecionada : targets) {
-					ReflectionTeste.set(objNewClass, colunaSelecionada, map.get(colunaSelecionada));
+				if (listMap.get(0).get(colunaSelecionada) instanceof Boolean) {
+					CtField f = new CtField(tipoBoolean, colunaSelecionada, point);
+					point.addField(f);
 				}
-				entidadeVaziaDao.save(objNewClass);
+				if (listMap.get(0).get(colunaSelecionada) instanceof Double) {
+					CtField f = new CtField(tipoDouble, colunaSelecionada, point);
+					point.addField(f);
+				}
+				if (listMap.get(0).get(colunaSelecionada) instanceof Float) {
+					CtField f = new CtField(tipoFloat, colunaSelecionada, point);
+					point.addField(f);
+				}
 			}
-
+			
+			if (newClass == null) {
+				newClass = point.toClass();
+			}
+			if (newClass != null && !nomeCollection.isEmpty()) {
+				for (Map<String, Object> map : listMap) {
+					Object objNewClass = newClass.newInstance();
+					for (String colunaSelecionada : targets) {
+						Reflection.set(objNewClass, colunaSelecionada, map.get(colunaSelecionada));
+					}
+					//mongoTemplate.insert(objNewClass, nomeCollection);
+					mongoTemplate.save(objNewClass, nomeCollection);
+				}
+				FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, nomeCollection, " Dados gravados com sucesso.");
+				FacesContext.getCurrentInstance().addMessage(null, message);
+			}else{
+				FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Não foi possível gravar os dados. verifique os campos preenchidos", " verifique os campos preenchidos");
+				FacesContext.getCurrentInstance().addMessage(null, message);
+			}
+		
 		} catch (Exception e) {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), "Erro ao gravar os dados no mongo."));
 			e.printStackTrace();
+		}finally{
+			point.detach();
 		}
 	}
 
@@ -482,6 +503,22 @@ public class MigradorControl {
 
 	public List<Map<String, Object>> getListMap() {
 		return listMap;
+	}
+
+	public String getNomeCollection() {
+		return nomeCollection;
+	}
+
+	public void setNomeCollection(String nomeCollection) {
+		this.nomeCollection = nomeCollection;
+	}
+
+	public Class getNewClass() {
+		return newClass;
+	}
+
+	public void setNewClass(Class newClass) {
+		this.newClass = newClass;
 	}
 
 

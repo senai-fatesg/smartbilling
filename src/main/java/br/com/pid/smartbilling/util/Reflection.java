@@ -1,8 +1,8 @@
-package br.com.pid.smartbilling.model;
+package br.com.pid.smartbilling.util;
 
 import java.lang.reflect.Field;
 
-public class ReflectionTeste {
+public class Reflection {
 
 	public static boolean set(Object object, String fieldName, Object fieldValue) {
 	    Class<?> clazz = object.getClass();

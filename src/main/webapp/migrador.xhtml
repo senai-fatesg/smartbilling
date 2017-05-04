@@ -8,7 +8,6 @@
 		<p:panel id="pnlMigrador" header="Migrador de dados">
 			<br />
 			<br />
-			<h3 style="margin-top:0">Migrador</h3>
 		    <h:panelGrid id="pngSelection" columns="2" style="margin-bottom:10px" cellpadding="5">
 		        <p:outputLabel for="console2" value="Utilizar:" />
 		        <p:selectOneRadio id="console2" value="#{migradorControl.migrarCsv}">
@@ -17,22 +16,26 @@
 		             <p:ajax update=":formCorpo:pnlMigrador"/>
 		        </p:selectOneRadio>
 		    </h:panelGrid>
-			<h:panelGrid id="pngOneMenu" columns="2" style="margin-bottom:10px" cellpadding="5" rendered="#{migradorControl.migrarCsv eq 'false'}">
+			<h:panelGrid id="pngOneMenu" style="margin-bottom:10px" cellpadding="5" rendered="#{migradorControl.migrarCsv eq 'false'}">
 				<p:outputLabel for="console" value="Sql:" />
-				<p:selectOneMenu id="console" value="#{migradorControl.sql}" style="width:380px">
+				<p:selectOneMenu id="console" value="#{migradorControl.sql}" style="width:420px">
 					<f:selectItem itemLabel="Selecione..." noSelectionOption="true"/>
 					<f:selectItems value="#{migradorControl.sqls}" var="sql" itemLabel="#{sql.sql}" itemValue="#{sql.sql}" />
 				</p:selectOneMenu>
 				<div style="margin-left: 10px">
-					<p:commandButton value="Migrar dados" update=":formCorpo:pickList" actionListener="#{migradorControl.executarSql}" icon="ui-icon-disk"
-						style="width: 180px" />
+					<p:commandButton value="Executar sql na base Oracle" update=":formCorpo:pickList" actionListener="#{migradorControl.executarSql}" icon="ui-icon-circle-triangle-e"
+						style="width: 280px" />
 				</div>
-				<div>
-					<h3 style="margin-top: 0">Basic PickList</h3>
-					<p:pickList id="pickList" value="#{migradorControl.dados}" var="dados" itemLabel="#{dados}" itemValue="#{dados}" />
+				<h3 style="margin-top: 0">Escolha as colunas que voçê deseja gravar no mongoDB</h3>
+				<br/>
+				<h:panelGrid id="pngPickList">
+					<p:pickList id="pickList" value="#{migradorControl.dados}" var="dados" itemLabel="#{dados}" itemValue="#{dados}"/>
+					<br/>
+					<p:outputLabel value="Collection" />
+					<p:inputText id="inpNomeCollection" value="#{migradorControl.nomeCollection}" placeholder="Esta será o nome da nova collection criada no mongodb" style="width: 440px"/>
 		
-					<p:commandButton id="citySubmit" value="Consultar colunas selecionadas" actionListener="#{migradorControl.executarSqlComColunasSelecionadas}" style="margin-top:5px" />
-				</div>
+					<p:commandButton id="citySubmit" value="Gravar dados no mongodb" actionListener="#{migradorControl.gravarDadosNoMongodb}" style="margin-top:5px" icon="ui-icon-disk"/>
+				</h:panelGrid>
 				
 			</h:panelGrid>
 			<h:panelGrid id="pngFile" columns="2" style="margin-bottom:10px" cellpadding="5" rendered="#{migradorControl.migrarCsv eq 'true'}">
@@ -42,16 +45,9 @@
 				<br />
 				<div style="margin-top: -15px">
 					<p:commandButton value="Migrar dados" ajax="false" actionListener="#{migradorControl.getUpload}" icon="ui-icon-disk"
-						style="width: 180px" />
+						style="width: 180px" update=":formCorpo:pnlMigrador"/>
 				</div>
 				<br />
-				<!-- 
-				<h3 style="margin-top: 0">Basic PickList</h3>
-				<p:pickList id="pickList" value="#{migradorControl.dados}" var="dados" itemLabel="#{dados}" itemValue="#{dados}" />
-	
-				<p:commandButton id="citySubmit" value="Submit" update="displayColumns" oncomplete="PF('dlgMigrador').show()" style="margin-top:5px" />
-				 -->
-				
 			</h:panelGrid>
 		</p:panel>
 	</ui:define>

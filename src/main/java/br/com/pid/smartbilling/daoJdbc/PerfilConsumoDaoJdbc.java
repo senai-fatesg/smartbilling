@@ -41,11 +41,20 @@ public class PerfilConsumoDaoJdbc{
 					if (rsm.getColumnClassName(i).equals("java.lang.Integer")) {
 						mapa.put(name, rs.getInt(name));
 					}
-					if (rsm.getColumnClassName(i).equals("java.util.Date")) {
-						mapa.put(name, rs.getDate(name));
-					}
 					if (rsm.getColumnClassName(i).equals("java.lang.Long")) {
 						mapa.put(name, rs.getLong(name));
+					}
+					if (rsm.getColumnClassName(i).equals("java.lang.Float")) {
+						mapa.put(name, rs.getFloat(name));
+					}
+					if (rsm.getColumnClassName(i).equals("java.lang.Double")) {
+						mapa.put(name, rs.getDouble(name));
+					}
+					if (rsm.getColumnClassName(i).equals("java.lang.Boolean")) {
+						mapa.put(name, rs.getBoolean(name));
+					}
+					if (rsm.getColumnClassName(i).equals("java.util.Date")) {
+						mapa.put(name, rs.getDate(name));
 					}
 					if (rsm.getColumnClassName(i).equals("java.math.BigDecimal")) {
 						mapa.put(name, rs.getLong(name));
