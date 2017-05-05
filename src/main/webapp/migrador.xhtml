@@ -43,12 +43,25 @@
 					<p:fileUpload label="Selecionar arquivo" value="#{migradorControl.file}" mode="simple" skinSimple="true" />
 				</div>
 				<br />
+				<h:panelGrid id="pngPickList2">
+					<p:pickList id="pickList2" value="#{migradorControl.dados}" var="dados" itemLabel="#{dados}" itemValue="#{dados}"/>
+					<br/>
+					<p:outputLabel value="Collection" />
+					<p:inputText id="inpNomeCollection2" value="#{migradorControl.nomeCollection}" placeholder="Esta será o nome da nova collection criada no mongodb" style="width: 440px"/>
+		
+					<p:commandButton id="citySubmit2" value="Gravar dados no mongodb" actionListener="#{migradorControl.gravarDados}" style="margin-top:5px" icon="ui-icon-disk"/>
+				</h:panelGrid>
 				<div style="margin-top: -15px">
-					<p:commandButton value="Migrar dados" ajax="false" actionListener="#{migradorControl.getUpload}" icon="ui-icon-disk"
-						style="width: 180px" update=":formCorpo:pnlMigrador"/>
+					<p:commandButton value="Migrar dados" ajax="false" update=":formCorpo:pickList2" actionListener="#{migradorControl.getUpload}" icon="ui-icon-disk"
+						style="width: 180px"/>
 				</div>
 				<br />
 			</h:panelGrid>
 		</p:panel>
+		<p:ajaxStatus onstart="PF('statusDialog').show();" onsuccess="PF('statusDialog').hide();" />
+
+		<p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+			<p:graphicImage url="/resources/imagens/ajax.gif" />
+		</p:dialog>
 	</ui:define>
 </ui:composition>
