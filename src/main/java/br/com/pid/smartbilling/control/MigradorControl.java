@@ -144,8 +144,6 @@ public class MigradorControl implements Serializable{
 	
 	public void gravarDados(){
 		String [] array2 = {};
-//		ArrayList<String> lista = new ArrayList<>();
-//		ArrayList<String> listaStringsValor = new ArrayList<>();
 		CtClass point = null;
 		try {
 			while(flagSynchronized) {
