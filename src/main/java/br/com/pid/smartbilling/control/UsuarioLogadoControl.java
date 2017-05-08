@@ -4,20 +4,21 @@ import java.io.Serializable;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.context.annotation.SessionScope;
 
 import br.com.pid.smartbilling.model.Usuario;
 import br.com.pid.smartbilling.repository.UsuarioDaoRepository;
 
 
 @Named
-@ViewScoped
+@SessionScope
 public class UsuarioLogadoControl implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -29,19 +30,22 @@ public class UsuarioLogadoControl implements Serializable {
 
 	@PostConstruct
 	public void init() {
-		try {
-			consultarUsuarioLogado();
-		} catch (Exception e) {
-			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), "Erro ao consultar usuário.");
-			FacesContext.getCurrentInstance().addMessage(null, message);
-		}
+		consultarUsuarioLogado();
 	}
 
 
 	private void consultarUsuarioLogado(){
+		String username;
 		try {
-			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			usuario = (Usuario) usuarioDao.findUsersByRegexpName((String) auth.getPrincipal());
+			Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+			if (principal instanceof UserDetails) {
+				username = ((UserDetails)principal).getUsername();
+			} else {
+				username = principal.toString();
+			}
+//			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			usuario = (Usuario) usuarioDao.findUsersByRegexpName(username);
 		} catch(Exception e){
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), "Erro ao consultar usuário logado.");
 			FacesContext.getCurrentInstance().addMessage(null, message);

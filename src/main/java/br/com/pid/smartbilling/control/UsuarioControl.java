@@ -7,12 +7,12 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.annotation.SessionScope;
 
 import br.com.pid.smartbilling.model.EnumPapelUsuario;
 import br.com.pid.smartbilling.model.EnumUf;
@@ -23,7 +23,7 @@ import br.com.pid.smartbilling.repository.UsuarioDaoRepository;
 import br.com.pid.smartbilling.util.UtilMd5;
 
 @Named
-@ViewScoped
+@SessionScope
 public class UsuarioControl {
 
 	private Usuario usuario = new Usuario();
@@ -150,7 +150,7 @@ public class UsuarioControl {
 			if (senhaAtualCripto.equals(usuarioLogado.getSenha())) {
 				if (senha1 != null && senha1.equals(senha2)) {
 					usuarioLogado.setSenhaNaoCriptografada(senha1);
-					//usuarioDao.alterar(usuarioLogada);
+					usuarioDaoRepository.save(usuarioLogado);
 					FacesMessage message = new FacesMessage("Usuário", usuario.getNome() + " senha alterada com sucesso.");
 					FacesContext.getCurrentInstance().addMessage(null, message);
 					return "inicio.jsf";

@@ -34,7 +34,7 @@
 	<h:body>
 		<pe:layout fullPage="true" options="#{templateControl.layoutOptionsOne}" rendered="#{templateControl.layoutOneShown}"  
                    state="#{templateControl.stateOne}">
-			<pe:layoutPane position="north" style="overflow-y: hidden;">
+			<pe:layoutPane id="peLayoutNorth" position="north" style="overflow-x: hidden !inportant; overflow-y: hidden !inportant;">
 				<div id="idMenuTopo" style="width: 99.8%; heigth: 50px; background: url('#{request.contextPath}/imagens/background-pattern.png') center center; background-size: 200 200; ">
 					<ui:include src="/menuTopo.xhtml"></ui:include>
 				</div>

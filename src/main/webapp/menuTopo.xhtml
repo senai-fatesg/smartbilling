@@ -32,7 +32,7 @@
 											<table style="width: 100%;">
 												<tr> 
 													<td rowspan="2" style="padding: 5px;">
-													<p:graphicImage width="100px;height:70px" value="/resources/imagens/user.png" style="margin-top: 20px;"/></td>
+													<p:graphicImage width="100px;height:40px" value="/resources/imagens/user.png" style="margin-top: 20px;"/></td>
 													<td>
 														<h:outputText value="#{UsuarioLogadoControl.usuario.nome}" style="font-size:12px" /> 
 														<p:spacer width="10px"/>
@@ -47,7 +47,7 @@
 											</table>
 											<p:separator />
 											<br/>
-											<p:commandButton value="Alterar senha" icon="ui-icon-person" onclick="PF('dialogAlterarSenha').show();" />
+											<p:commandButton value="Alterar senha" icon="ui-icon-person" onclick="PF('dialogAlterarSenha').show();"/>
 											<p:spacer width="20px"/>
 											<p:commandButton value="Sair" icon="ui-icon-power" onclick="document.location.href='/smartbilling/sair.jsp'" immediate="true" />
 										</p:panel>
@@ -57,40 +57,24 @@
 						</div>
 				</div>			
 			</ul>
-				<p:dialog header="Alterar senha" widgetVar="dialogAlterarSenha" modal="true"  maximizable="true" dynamic="true">
-			<!-- 
-			<h:form>
-		    		 <a:field label="Informe a senha atual">
-		                <p:password styleClass="obrigatorio" value="#{usuarioControl.usuario.confirmarSenha}" id="snh" style="width:200px" />
-		            </a:field>
-		
-		            <a:newLine />
-		
-		            <a:field label="Informe uma nova senha">
-		                <p:password styleClass="obrigatorio" minLength="6" value="#{usuarioControl.senha1}" promptLabel="Digite a senha"
-		                    goodLabel="Senha boa" strongLabel="Senha forte" weakLabel="Senha Fraca" style="width:200px" />
-		            </a:field>
-		
-		            <a:newLine />
-		
-		            <a:field label="Reinforme a nova senha">
-		                <p:password styleClass="obrigatorio" minLength="6" value="#{usuarioControl.senha2}" style="width:200px" />
-		            </a:field>
-		
-		            <a:newLine />
-		            
-		            <a:field>
-		                <p:commandButton id="alterarSenha" value="Alterar" action="#{usuarioControl.alterarSenha}" ajax="false" icon="ui-icon-refresh" oncomplete="PF('dialogAlterarSenha').close();" />
-		            </a:field>
-		            
-		            <a:field spaceLeft="10px">
-		                <p:commandButton id="btnCancelarTransf" icon="ui-icon-circle-close" onclick="PF('dialogAlterarSenha').close();" value="Cancelar" />
-		            </a:field>
-		
-		            <a:newLine />
-		            <a:newLine />
-			</h:form>
-			 -->
+			<p:dialog header="Alterar senha" widgetVar="dialogAlterarSenha" maximizable="true" dynamic="true">
+				<h:form>
+					<h:outputLabel value="Informe a senha atual"/>
+					<br/>
+			      <p:password styleClass="obrigatorio" value="#{usuarioControl.usuario.confirmaSenha}" id="snh" style="width:200px" />
+					<br/>
+					<h:outputLabel value="Informe a nova senha"/>
+	            <p:password styleClass="obrigatorio" minLength="6" value="#{usuarioControl.senha1}" promptLabel="Digite a senha"
+	                goodLabel="Senha boa" strongLabel="Senha forte" weakLabel="Senha Fraca" style="width:200px" />
+					<h:outputLabel value="Repita a nova senha"/>
+	            <p:password styleClass="obrigatorio" minLength="6" value="#{usuarioControl.senha2}" style="width:200px" />
+			      <br/>    
+	            <p:commandButton id="alterarSenha" style="width: 100px" value="Salvar" action="#{usuarioControl.alterarSenha}" 
+	            	ajax="false" icon="ui-icon-disk" oncomplete="PF('dialogAlterarSenha').close();" />
+			      <p:spacer width="10px"/>
+			      <p:commandButton id="btnCancelarTransf" style="width: 100px" icon="ui-icon-circle-close" onclick="PF('dialogAlterarSenha').close();" value="Fechar" />
+			
+				</h:form>
 				</p:dialog>
 		</ui:insert>
 </ui:composition>
