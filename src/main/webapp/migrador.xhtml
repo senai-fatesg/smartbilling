@@ -38,22 +38,22 @@
 				</h:panelGrid>
 				
 			</h:panelGrid>
-			<h:panelGrid id="pngFile" columns="2" style="margin-bottom:10px" cellpadding="5" rendered="#{migradorControl.migrarCsv eq 'true'}">
+			<h:panelGrid id="pngFile" style="margin-bottom:10px" cellpadding="5" rendered="#{migradorControl.migrarCsv eq 'true'}">
 				<div>
 					<p:fileUpload label="Selecionar arquivo" value="#{migradorControl.file}" mode="simple" skinSimple="true" />
+					<p:commandButton value="Ler dados" ajax="false" update=":formCorpo:pickList2" actionListener="#{migradorControl.getUpload}" icon="ui-icon-arrow-2-e-w" style="width: 180px"/>
 				</div>
-				<br />
+				<h3 style="margin-top: 0">Escolha as colunas que voçê deseja gravar no mongoDB</h3>
+				<br/>
 				<h:panelGrid id="pngPickList2">
 					<p:pickList id="pickList2" value="#{migradorControl.dados}" var="dados" itemLabel="#{dados}" itemValue="#{dados}"/>
 					<br/>
 					<p:outputLabel value="Collection" />
 					<p:inputText id="inpNomeCollection2" value="#{migradorControl.nomeCollection}" placeholder="Esta será o nome da nova collection criada no mongodb" style="width: 440px"/>
 		
-					<p:commandButton id="citySubmit2" value="Gravar dados no mongodb" actionListener="#{migradorControl.gravarDados}" style="margin-top:5px" icon="ui-icon-disk"/>
 				</h:panelGrid>
 				<div style="margin-top: -15px">
-					<p:commandButton value="Migrar dados" ajax="false" update=":formCorpo:pickList2" actionListener="#{migradorControl.getUpload}" icon="ui-icon-disk"
-						style="width: 180px"/>
+					<p:commandButton id="citySubmit2" value="Gravar dados" actionListener="#{migradorControl.gravarDados}" style="margin-top:5px" icon="ui-icon-disk"/>
 				</div>
 				<br />
 			</h:panelGrid>

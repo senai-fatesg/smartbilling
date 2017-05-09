@@ -69,7 +69,9 @@ public class PerfilConsumoDaoJdbc{
 			try{
 				if(con!=null)
 					con.close();
-			}catch(Exception e){}
+			}catch(Exception e){
+				e.getMessage();
+			}
 		}
 		return listaMapas;
 

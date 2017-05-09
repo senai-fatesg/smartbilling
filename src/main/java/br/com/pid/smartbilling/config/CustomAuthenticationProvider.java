@@ -38,13 +38,13 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         String password = UtilMd5.gerarMd5(authentication.getCredentials().toString());
         
         String message = String.format("Username: '%s' Password: '%s'", username, password);
-        Usuario usuario = null;       
+        //Usuario usuario = null;       
         
         if (validate(username, password)) {
         	LOGGER.info(message);
             List<GrantedAuthority> grantedAuths = new ArrayList<>();
             grantedAuths.add(new SimpleGrantedAuthority("USER"));
-            return new UsernamePasswordAuthenticationToken(usuario, authentication, grantedAuths); 
+            return new UsernamePasswordAuthenticationToken(username, authentication, grantedAuths);
         } else {
             String error = String.format("Invalid credentials [%s]", message);
             throw new BadCredentialsException(error);

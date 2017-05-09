@@ -145,14 +145,13 @@ public class UsuarioControl {
 	public String alterarSenha() {
 		try {
 			String senhaAtualCripto = UtilMd5.gerarMd5(usuario.getConfirmaSenha());
-			//String senhaAtualCripto = UtilHash.gerarStringHash(confirmarSenha, Algoritimo.MD5);
 			Usuario usuarioLogado = usuarioLogadoControl.getUsuario();
 			if (senhaAtualCripto.equals(usuarioLogado.getSenha())) {
 				if (senha1 != null && senha1.equals(senha2)) {
 					usuarioLogado.setSenhaNaoCriptografada(senha1);
 					usuarioDaoRepository.save(usuarioLogado);
-					FacesMessage message = new FacesMessage("Usuário", usuario.getNome() + " senha alterada com sucesso.");
-					FacesContext.getCurrentInstance().addMessage(null, message);
+					FacesMessage message = new FacesMessage("senha alterada com sucesso.");
+					FacesContext.getCurrentInstance().addMessage("Usuário: " + usuarioLogado.getNome(), message);
 					return "inicio.jsf";
 				} else {
 					FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, null, "Senhas diferentes.");

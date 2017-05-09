@@ -34,14 +34,16 @@
 													<td rowspan="2" style="padding: 5px;">
 													<p:graphicImage width="100px;height:40px" value="/resources/imagens/user.png" style="margin-top: 20px;"/></td>
 													<td>
-														<h:outputText value="#{UsuarioLogadoControl.usuario.nome}" style="font-size:12px" /> 
+														<h:outputText value="#{usuarioLogadoControl.usuario.nome}" style="font-size:12px" /> 
+														<br/>
+														<h:outputText value="#{usuarioLogadoControl.usuario.email}" style="font-size:12px" /> 
 														<p:spacer width="10px"/>
-														<p:spacer width="10px"/>
-														<!-- 
-														<h:outputText value="#{UsuarioLogadoControl.usuario.dataUltimoAcesso}" style="font-size:10px;font-style:italic">
+														<br/>
+														<br/>
+														<h:outputText value="#{usuarioLogadoControl.usuario.dataUltimoAcesso}" style="font-size:10px;font-style:italic">
 															<f:convertDateTime pattern="'Último Acesso: ' dd/MM/yyyy 'às'  HH:mm" />
 														</h:outputText>
-														 -->
+														<p:spacer width="10px"/>
 													</td>
 												</tr>
 											</table>

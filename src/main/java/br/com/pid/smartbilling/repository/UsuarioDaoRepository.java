@@ -17,8 +17,10 @@ public interface UsuarioDaoRepository extends MongoRepository<Usuario, String>{
 	
 	@Query("{ 'cpf' : ?0 }")
 	Usuario findUserByCpf(String cpf);
+	
+	@Query("{ 'login' : ?0 }")
+	Usuario findByOne(String login);
 
-	//@Query("{ 'username'  }, { 'password' : ?0 }")
 	@Query( "{$and: [{ 'login' : ?0}, { 'senha' :  ?1}]}")
 	Usuario validateUser(String username, String password);
 

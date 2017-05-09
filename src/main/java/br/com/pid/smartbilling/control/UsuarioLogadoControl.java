@@ -8,7 +8,6 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.context.annotation.SessionScope;
@@ -23,7 +22,7 @@ public class UsuarioLogadoControl implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private Usuario usuario;
+	private Usuario usuario = new Usuario();
 
 	@Autowired
 	private UsuarioDaoRepository usuarioDao;
@@ -44,18 +43,13 @@ public class UsuarioLogadoControl implements Serializable {
 			} else {
 				username = principal.toString();
 			}
-//			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			usuario = (Usuario) usuarioDao.findUsersByRegexpName(username);
+			usuario = usuarioDao.findByOne(username);
 		} catch(Exception e){
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), "Erro ao consultar usuário logado.");
 			FacesContext.getCurrentInstance().addMessage(null, message);
 		}
 	}
 
-
-//	public static Usuario getUsuarioConfigurado() {
-//		return (Usuario) UtilFaces.getObjetoManagedBean("#{UsuarioLogadoControl.usuario}");
-//	}
 
 	@Override
 	public String toString() {

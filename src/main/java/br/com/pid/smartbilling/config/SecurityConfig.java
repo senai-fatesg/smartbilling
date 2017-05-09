@@ -71,20 +71,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
 	@Override
 	protected UserDetailsService userDetailsService() {
-
 		List<Usuario> usuarios = usuarioDaoRepository.findAll();
-		
 		if (usuarios.isEmpty()) {
 			inicializador.iniciar();
 		}
-
 		List<UserDetails> users = new ArrayList<>();
-
 		for (Usuario u: usuarios){
 			UserDetails user = new User(u.getLogin(), u.getSenha(), AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_"+u.getPapeis()));
 			users.add(user);
 		}
-
 		return new InMemoryUserDetailsManager(users);
 	}
 }
