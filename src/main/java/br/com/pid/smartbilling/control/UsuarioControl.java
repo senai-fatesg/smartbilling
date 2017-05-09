@@ -81,6 +81,15 @@ public class UsuarioControl {
 			FacesContext.getCurrentInstance().addMessage(null, message);
 		}
 	}
+	
+	public void alterar(){
+		if (this.usuarioAlterar != null) {
+			this.usuario = usuarioAlterar;
+			usuarioDaoRepository.save(this.usuario);
+			FacesMessage message = new FacesMessage("Usuário", usuario.getNome() + " Registro salvo com sucesso.");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+		}
+	}
 
 	public void listar(){
 		try{
